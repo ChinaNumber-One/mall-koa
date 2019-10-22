@@ -282,6 +282,9 @@ router.post('/addAddress',passport.authenticate('jwt', { session: false }),async
     userId:ctx.state.user.id,
     ...ctx.request.body
   })
+  if(ctx.request.body.isDefault) {
+    await Address.updateMany({isDefault:true},{isDefault:false})
+  }
   await newAddress.save().then(user => {
     ctx.status = 200;
     ctx.body = {
@@ -299,12 +302,15 @@ router.post('/addAddress',passport.authenticate('jwt', { session: false }),async
 
 /*
  * @route POST api/user/editorAddress
- * @desc 添加 收货地址 接口
+ * @desc 编辑 收货地址 接口
  * @access 私有接口
  */
 
 router.post('/editorAddress',passport.authenticate('jwt', { session: false }),async ctx=>{
   let updateData = {$set : ctx.request.body};
+  if(ctx.request.body.isDefault) {
+    await Address.updateMany({isDefault:true},{isDefault:false})
+  }
   const findResult = await Address.findOneAndUpdate({_id:ctx.request.body._id},updateData)
   if(findResult) {
     ctx.body = {
@@ -318,5 +324,24 @@ router.post('/editorAddress',passport.authenticate('jwt', { session: false }),as
     }
   }
 })
+/*
+ * @route POST api/user/deleteAddress
+ * @desc 编辑 收货地址 接口
+ * @access 私有接口
+ */
 
+router.post('/deleteAddress',passport.authenticate('jwt', { session: false }),async ctx=>{
+  const findResult = await Address.findOneAndRemove({_id:ctx.request.body.id})
+  if(findResult) {
+    ctx.body = {
+      status:1,
+      msg:'删除成功'
+    }
+  } else {
+    ctx.body = {
+      status:0,
+      msg:'删除失败'
+    }
+  }
+})
 module.exports = router.routes()

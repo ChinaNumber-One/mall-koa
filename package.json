@@ -5,7 +5,7 @@
   "main": "koa.js",
   "scripts": {
     "start": "node koa.js",
-    "modemon": "nodemon koa.js"
+    "serve": "nodemon koa.js"
   },
   "keywords": [],
   "author": "",
