@@ -326,7 +326,7 @@ router.post('/editorAddress',passport.authenticate('jwt', { session: false }),as
 })
 /*
  * @route POST api/user/deleteAddress
- * @desc 编辑 收货地址 接口
+ * @desc 删除 收货地址 接口
  * @access 私有接口
  */
 
